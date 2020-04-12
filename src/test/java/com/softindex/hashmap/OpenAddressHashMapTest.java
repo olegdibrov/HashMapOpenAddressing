@@ -10,6 +10,9 @@ import java.util.stream.IntStream;
 public class OpenAddressHashMapTest {
 
     private HashMap map;
+    private static final int MAX = 20000;
+    private static final int MIN = 10000;
+    private static final int amountOfElements = 500;
 
     @Before
     public void beforeEachMethod() {
@@ -27,8 +30,8 @@ public class OpenAddressHashMapTest {
 
     @Test
     public void should_ResizeCapacity_When_CapacityIsLoaded() {
-         IntStream.range(1, 51).forEach(index -> map.put(index, index));
-         Assert.assertEquals(50, map.size());
+        IntStream.range(0, amountOfElements).forEach(index -> map.put((int) (Math.random() * ((MAX - MIN) + 1)) + MIN, index));
+        Assert.assertTrue(((OpenAddressHashMap) map).getCapacity() > 16);
     }
 
     @Test
@@ -39,8 +42,8 @@ public class OpenAddressHashMapTest {
         Assert.assertEquals(1L, map.get(18));
         Assert.assertEquals(2L, map.get(34));
 
-        Assert.assertEquals(2, ((OpenAddressHashMap)map).getBucketNumber(18));
-        Assert.assertEquals(3, ((OpenAddressHashMap)map).getBucketNumber(34));
+        Assert.assertEquals(2, ((OpenAddressHashMap) map).getBucketNumber(18));
+        Assert.assertEquals(3, ((OpenAddressHashMap) map).getBucketNumber(34));
     }
 
     @Test
@@ -53,9 +56,9 @@ public class OpenAddressHashMapTest {
         Assert.assertEquals(2L, map.get(19));
         Assert.assertEquals(3L, map.get(34));
 
-        Assert.assertEquals(2, ((OpenAddressHashMap)map).getBucketNumber(18));
-        Assert.assertEquals(3, ((OpenAddressHashMap)map).getBucketNumber(19));
-        Assert.assertEquals(4, ((OpenAddressHashMap)map).getBucketNumber(34));
+        Assert.assertEquals(2, ((OpenAddressHashMap) map).getBucketNumber(18));
+        Assert.assertEquals(3, ((OpenAddressHashMap) map).getBucketNumber(19));
+        Assert.assertEquals(4, ((OpenAddressHashMap) map).getBucketNumber(34));
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -64,8 +67,9 @@ public class OpenAddressHashMapTest {
     }
 
     @Test
-    public void test_negative_key() {
+    public void when_PutNegativeKey_Expect_AbsHash() {
         map.put(-5, 4L);
+        Assert.assertEquals(4L, map.get(-5));
     }
 
 }

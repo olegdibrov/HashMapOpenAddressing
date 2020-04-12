@@ -66,6 +66,9 @@ public class OpenAddressHashMap implements HashMap {
         boolean newKey = true;
         while (table[bucketNumber] != null && (newKey = table[bucketNumber].getKey() != key)) {
             bucketNumber++;
+            if (bucketNumber == capacity) {
+                resizeCapacity();
+            }
         }
         table[bucketNumber] = new Entity(key, value);
         if (newKey) {
@@ -87,5 +90,9 @@ public class OpenAddressHashMap implements HashMap {
             bucketNumber++;
         }
         return bucketNumber;
+    }
+
+    protected int getCapacity() {
+        return capacity;
     }
 }
