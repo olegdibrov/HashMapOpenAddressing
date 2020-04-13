@@ -20,22 +20,22 @@ public class OpenAddressHashMapTest {
     }
 
     @Test
-    public void when_PutTwoSameKeys_Expect_SizeOneAndFirstPutReplaced() {
+    public void whenPutTwoSameKeysExpectSizeOneAndFirstPutReplaced() {
         map.put(1, 1L);
         map.put(1, 2L);
 
-        Assert.assertEquals(1L, map.size());
+        Assert.assertEquals(1, map.size());
         Assert.assertEquals(2L, map.get(1));
     }
 
     @Test
-    public void should_ResizeCapacity_When_CapacityIsLoaded() {
+    public void shouldResizeCapacityWhenCapacityIsLoaded() {
         IntStream.range(0, amountOfElements).forEach(index -> map.put((int) (Math.random() * ((MAX - MIN) + 1)) + MIN, index));
         Assert.assertTrue(((OpenAddressHashMap) map).getCapacity() > 16);
     }
 
     @Test
-    public void when_PutDifferentKeysWithSameHashFunction_Expect_SavingInNextNullBucket() {
+    public void whenPutDifferentKeysWithSameHashFunctionExpectSavingInNextNullBucket() {
         map.put(18, 1L);
         map.put(34, 2L);
 
@@ -47,7 +47,7 @@ public class OpenAddressHashMapTest {
     }
 
     @Test
-    public void when_PutDifferentKeysWithSameHashFunctionAndNextBucketIsNotNull_Expect_SavingInNextNullBucket() {
+    public void whenPutDifferentKeysWithSameHashFunctionAndNextBucketIsNotNullExpectSavingInNextNullBucket() {
         map.put(18, 1L);
         map.put(19, 2L);
         map.put(34, 3L);
@@ -62,12 +62,12 @@ public class OpenAddressHashMapTest {
     }
 
     @Test(expected = NoSuchElementException.class)
-    public void should_ThrowException_When_TryToGetNotSavedKey() {
+    public void shouldThrowExceptionWhenTryToGetNotSavedKey() {
         map.get(1);
     }
 
     @Test
-    public void when_PutNegativeKey_Expect_AbsHash() {
+    public void whenPutNegativeKeyExpectAbsHash() {
         map.put(-5, 4L);
         Assert.assertEquals(4L, map.get(-5));
     }
