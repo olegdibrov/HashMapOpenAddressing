@@ -61,8 +61,7 @@ public class OpenAddressHashMap implements HashMap {
     }
 
     private void putVal(int key, long value) {
-        int hash = hashFunction(key);
-        int bucketNumber = hash;
+        int bucketNumber = hashFunction(key);
         boolean newKey = true;
         while (table[bucketNumber] != null && (newKey = table[bucketNumber].getKey() != key)) {
             bucketNumber++;
